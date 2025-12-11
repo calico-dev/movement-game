@@ -48,7 +48,7 @@ environment = SubResource("Environment_aqk2v")
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
 script = ExtResource("1_f3sb7")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="Body" type="MeshInstance3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.496459, 0)
 mesh = SubResource("CapsuleMesh_036b0")
 script = SubResource("GDScript_f3sb7")

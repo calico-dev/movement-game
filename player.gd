@@ -19,8 +19,9 @@ var original_camera_y
 # Camera and Raycast variables
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
-@onready var below_ledge = $Head/ledge_check/below_ledge
-@onready var above_ledge = $Head/ledge_check/above_ledge
+@onready var below_ledge = $Head/Camera3D/ledge_check/below_ledge
+@onready var above_ledge = $Head/Camera3D/ledge_check/above_ledge
+@onready var body = $MeshInstance3D
 
 # Capture mouse in game window
 func _ready():
@@ -45,14 +46,6 @@ func _input(event):
 	elif event.is_action_pressed("menu"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		set_physics_process(true)
-
-# Head bob function
-func _headbob(time) -> Vector3:
-	var pos = Vector3.ZERO
-	pos.y = sin(time * BOB_FREQ) * BOB_AMP
-	pos.x = cos(time * BOB_FREQ / 2) * BOB_AMP	
-	return pos
-
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -84,14 +77,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = lerp(velocity.x, direction.x * speed, delta * 2.0)
 		velocity.z = lerp(velocity.z, direction.z * speed, delta * 2.0)
-
-	# Headbob 
-	if velocity.length() > 0 and direction != Vector3.ZERO:
-		t_bob += delta * velocity.length() * float(is_on_floor())
-		camera.transform.origin = _headbob(t_bob)
-	else:
-		camera.transform.origin = lerp(camera.transform.origin, original_camera_y, delta * 5.0)
-		t_bob = 0.00
 		
 	# FOV
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 1.3)

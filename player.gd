@@ -19,8 +19,8 @@ var original_camera_y
 # Camera and Raycast variables
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
-@onready var below_ledge = $Head/Camera3D/ledge_check/below_ledge
-@onready var above_ledge = $Head/Camera3D/ledge_check/above_ledge
+@onready var below_ledge = $Head/ledge_check/below_ledge
+@onready var above_ledge = $Head/ledge_check/above_ledge
 
 # Capture mouse in game window
 func _ready():
@@ -88,17 +88,15 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("jump"):
 			velocity.y = JUMP_VELOCITY * 1.1
 	
-	
 	# Wall jump using the ledge detection raycasts
 	var walljump := 2
 	
 	if is_on_floor():
 		walljump = 2
 	
-	if not is_on_floor():
-		if above_ledge.is_colliding() and below_ledge.is_colliding():
-			if Input.is_action_just_pressed("jump") and walljump > 0:
-				velocity.y = JUMP_VELOCITY  
-				walljump -= 1
+	if is_on_wall():
+		if Input.is_action_just_pressed("jump") and walljump > 0:
+			velocity.y = JUMP_VELOCITY
+			walljump -= 1
 
 	move_and_slide()

@@ -62,15 +62,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9963981, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
 
-[node name="ledge_check" type="Node3D" parent="CharacterBody3D/Head/Camera3D"]
+[node name="ledge_check" type="Node3D" parent="CharacterBody3D/Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9963981, 0)
 
-[node name="above_ledge" type="RayCast3D" parent="CharacterBody3D/Head/Camera3D/ledge_check"]
+[node name="above_ledge" type="RayCast3D" parent="CharacterBody3D/Head/ledge_check"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.936002, 0)
 target_position = Vector3(0, 0, 0.75)
 collide_with_areas = true
 
-[node name="below_ledge" type="RayCast3D" parent="CharacterBody3D/Head/Camera3D/ledge_check"]
+[node name="below_ledge" type="RayCast3D" parent="CharacterBody3D/Head/ledge_check"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9673054, 0)
 target_position = Vector3(0, 0, 0.75)
 collide_with_areas = true

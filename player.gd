@@ -2,10 +2,12 @@ extends CharacterBody3D
 
 var speed
 var walljump := 0
+var is_on_ledge = false
 const WALK_SPEED = 5.0
 const SPRINT_SPEED = 8.0
 const JUMP_VELOCITY = 4.5
 const SENSITIVITY = 0.001
+
 
 # Headbob variables
 const BOB_FREQ = 2.0
@@ -86,8 +88,11 @@ func _physics_process(delta: float) -> void:
 	
 	# "Climb" up ledge using raycast
 	if above_ledge.is_colliding() == false and below_ledge.is_colliding():
+		is_on_ledge = true
 		if Input.is_action_just_pressed("jump"):
 			velocity.y = JUMP_VELOCITY * 1.1
+	else:
+		is_on_ledge = false
 	
 	move_and_slide()
 	
@@ -95,8 +100,8 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		walljump = 2
 	
-	if is_on_wall():
+	if is_on_wall() and is_on_ledge == false:
 		if walljump > 0 and Input.is_action_just_pressed("jump"):
 			walljump -= 1
-			velocity.y = JUMP_VELOCITY
+			velocity.y = JUMP_VELOCITY * 1.2
 			print(walljump) 

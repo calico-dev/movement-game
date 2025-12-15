@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 var speed
+var walljump := 0
 const WALK_SPEED = 5.0
 const SPRINT_SPEED = 8.0
 const JUMP_VELOCITY = 4.5
@@ -74,8 +75,8 @@ func _physics_process(delta: float) -> void:
 			velocity.x = lerp(velocity.x, direction.x * speed, delta * 9.0)
 			velocity.z = lerp(velocity.z, direction.z * speed, delta * 9.0)
 	else:
-		velocity.x = lerp(velocity.x, direction.x * speed, delta * 2.0)
-		velocity.z = lerp(velocity.z, direction.z * speed, delta * 2.0)
+		velocity.x = lerp(velocity.x, direction.x * speed, delta * 3.0)
+		velocity.z = lerp(velocity.z, direction.z * speed, delta * 3.0)
 		
 	# FOV
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 1.3)
@@ -88,15 +89,14 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("jump"):
 			velocity.y = JUMP_VELOCITY * 1.1
 	
-	# Wall jump using the ledge detection raycasts
-	var walljump := 2
+	move_and_slide()
 	
+	# Handle wall jump
 	if is_on_floor():
 		walljump = 2
 	
 	if is_on_wall():
-		if Input.is_action_just_pressed("jump") and walljump > 0:
-			velocity.y = JUMP_VELOCITY
+		if walljump > 0 and Input.is_action_just_pressed("jump"):
 			walljump -= 1
-
-	move_and_slide()
+			velocity.y = JUMP_VELOCITY
+			print(walljump) 
